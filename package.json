@@ -1,0 +1,21 @@
+{
+  "name": "hita-regulations-bot",
+  "version": "1.0.0",
+  "description": "HITAM Regulations Bot - RAG-based Chatbot for College Regulations",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "start:both": "cd frontend && npm run start:both",
+    "build:vector-store": "cd backend && node vector_store/buildVectorStore.js",
+    "dev": "cd backend && npm run dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
