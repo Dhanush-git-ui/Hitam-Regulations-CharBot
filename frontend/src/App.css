@@ -1,0 +1,38 @@
+/* App Container */
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--panel-bg);
+  position: relative;
+  overflow: hidden;
+  max-width: 1000px;
+  margin: 24px auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--glass-border);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-content {
+    margin: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+}

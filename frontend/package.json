@@ -1,0 +1,39 @@
+{
+  "name": "hitam-regulations-bot-frontend",
+  "version": "1.0.0",
+  "description": "HITAM Regulations Bot - React Frontend",
+  "private": true,
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-scripts": "^5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start:both": "npx -y kill-port 5000 3000 && concurrently \"cd ../backend && node server.js\" \"react-scripts start\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://127.0.0.1:5000",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
