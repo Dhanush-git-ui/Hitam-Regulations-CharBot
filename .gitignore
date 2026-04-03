@@ -29,7 +29,7 @@ desktop.ini
 *~
 
 # Vector store (will be regenerated)
-backend/vector_store/store.json
+# backend/vector_store/store.json
 
 # Logs
 logs/
