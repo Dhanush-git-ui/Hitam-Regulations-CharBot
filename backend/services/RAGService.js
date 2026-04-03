@@ -12,9 +12,9 @@ class RAGService {
   constructor(options = {}) {
     this.vectorStorePath = options.vectorStorePath || path.join(__dirname, "../vector_store/store.json");
     this.vectorStore = null;
-    this.topK = parseInt(process.env.TOP_K_RESULTS) || 10;
-    this.finalK = 10; // Provide massive context to the LLM (up to 10 chunks)
-    this.minSimilarity = 0.45; // Broadened slightly to capture linguistic variations
+    this.topK = parseInt(process.env.TOP_K_RESULTS) || 5;
+    this.finalK = this.topK; 
+    this.minSimilarity = 0.45; 
     this.llmFailCount = 0;
     this.MAX_FAILS = 3;
   }
@@ -106,9 +106,10 @@ class RAGService {
         stream: false,
         options: { 
           temperature: 0, 
-          num_predict: 400,  // Reduced from 800 for faster responses
-          top_k: 10,         // Narrow down predictions
-          top_p: 0.9         // Nucleus sampling for faster generation
+          num_predict: 400,  
+          num_ctx: 2048,
+          top_k: 10,         
+          top_p: 0.9         
         }
       },
       { timeout: 60000 }  // Reduced from 90s

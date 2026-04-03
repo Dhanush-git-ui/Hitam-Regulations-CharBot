@@ -9,14 +9,50 @@ app.use(cors());
 app.use(express.json());
 
 // -----------------------------
+// FILE LISTING ENDPOINT
+// -----------------------------
+
+app.get('/files', async (req, res) => {
+  try {
+    const docsFolder = path.join(__dirname, '../documents/active');
+    const fs = require('fs');
+    
+    if (!fs.existsSync(docsFolder)) {
+      return res.json([]);
+    }
+
+    const files = fs.readdirSync(docsFolder)
+      .filter(f => /\.(pdf|docx|txt)$/i.test(f))
+      .map(f => {
+        // Create small descriptions based on file names
+        let description = "Official HITAM regulation document.";
+        if (f.toLowerCase().includes('attendance')) description = "Rules for class attendance and leaves.";
+        if (f.toLowerCase().includes('progression')) description = "Criteria for advancing to next academic year.";
+        if (f.toLowerCase().includes('band')) description = "Details regarding Band A, B, C, and D progression.";
+        if (f.toLowerCase().includes('credit')) description = "Grading and credit requirements.";
+        
+        return {
+          name: f,
+          description: description
+        };
+      });
+
+    res.json(files);
+  } catch (error) {
+    console.error('Error listing files:', error);
+    res.status(500).json({ error: 'Failed to list files' });
+  }
+});
+
+// -----------------------------
 // RAG SERVICE
 // -----------------------------
 
 const ragService = new RAGService({
   vectorStorePath: path.join(__dirname, 'vector_store/store.json'),
   documentsPath: path.join(__dirname, '../documents'),
-  chunkSize: 500,
-  topK: 3
+  chunkSize: parseInt(process.env.CHUNK_SIZE) || 500,
+  topK: parseInt(process.env.TOP_K_RESULTS) || 5
 });
 
 // -----------------------------

@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './App.css';
 import Sidebar from './components/Sidebar';
 import ChatHeader from './components/ChatHeader';
 import ChatContainer from './components/ChatContainer';
@@ -30,7 +29,6 @@ function App() {
 
   const checkBackendStatus = async () => {
     try {
-      // Use the health check endpoint for faster status check
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
       
@@ -42,9 +40,7 @@ function App() {
       clearTimeout(timeoutId);
       setBackendStatus(response.ok ? 'online' : 'offline');
     } catch (error) {
-      // Only set to offline if it's a connection error, not a timeout
       if (error.name === 'AbortError') {
-        // Timeout - backend might be slow but still running
         console.log('Backend status check timed out, assuming online');
         setBackendStatus('online');
       } else {
@@ -65,7 +61,6 @@ function App() {
   const sendMessage = async (message) => {
     if (!message.trim() || isTyping) return;
 
-    // Add user message
     const userMessage = {
       id: Date.now(),
       role: 'user',
@@ -125,14 +120,14 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="flex h-screen w-full bg-gray-50 overflow-hidden font-sans">
       <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}
         onNewChat={startNewChat}
       />
       
-      <main className="main-content">
+      <main className="flex flex-col flex-1 h-full w-full relative">
         <ChatHeader 
           backendStatus={backendStatus}
           onMenuClick={() => setSidebarOpen(true)}
@@ -140,18 +135,22 @@ function App() {
           hasMessages={messages.length > 0}
         />
         
-        <ChatContainer 
-          messages={messages}
-          isTyping={isTyping}
-          chatEndRef={chatEndRef}
-          onSendMessage={sendMessage}
-        />
+        <div className="flex-1 overflow-y-auto pb-[150px]">
+          <ChatContainer 
+            messages={messages}
+            isTyping={isTyping}
+            chatEndRef={chatEndRef}
+            onSendMessage={sendMessage}
+          />
+        </div>
         
-        <InputArea 
-          onSendMessage={sendMessage}
-          isTyping={isTyping}
-          disabled={false}
-        />
+        <div className="absolute bottom-0 w-full">
+          <InputArea 
+            onSendMessage={sendMessage}
+            isTyping={isTyping}
+            disabled={false}
+          />
+        </div>
       </main>
 
       <Toast 
