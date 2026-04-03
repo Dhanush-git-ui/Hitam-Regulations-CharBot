@@ -13,7 +13,9 @@ function App() {
   const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
   const chatEndRef = useRef(null);
 
-  const API_URL = 'http://127.0.0.1:5000/ask';
+  const API_URL = process.env.REACT_APP_API_URL 
+    ? `${process.env.REACT_APP_API_URL}/ask`
+    : 'http://127.0.0.1:5000/ask';
 
   // Check backend status on mount and periodically
   useEffect(() => {
@@ -32,7 +34,8 @@ function App() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
       
-      const response = await fetch('http://127.0.0.1:5000/health', {
+      const baseUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+      const response = await fetch(`${baseUrl}/health`, {
         method: 'GET',
         signal: controller.signal
       });
